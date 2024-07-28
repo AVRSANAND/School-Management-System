@@ -1,12 +1,12 @@
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import (QApplication, QVBoxLayout,
                              QLabel, QWidget, QGridLayout,
-                             QLineEdit, QPushButton, QMainWindow)
-from PyQt6.QtGui import QAction
+                             QLineEdit, QPushButton, QMainWindow, QTableWidget)
 import sys
 
+
 class MainWindow(QMainWindow):
-    def __int__(self):
+    def __init__(self):
         super().__init__()
         self.setWindowTitle("School Management System")
 
@@ -20,8 +20,18 @@ class MainWindow(QMainWindow):
         help_menu_item.addAction(about_action)
         about_action.setMenuRole(QAction.MenuRole.NoRole)
 
+        self.table = QTableWidget()
+        self.table.setColumnCount(4)
+        self.table.setHorizontalHeaderLabels(("id", "name", "course", "mobile"))
+        self.setCentralWidget(self.table)
+
+
+    def load_Data(self):
+        self.table
+        pass
+
 
 app = QApplication(sys.argv)
-main = MainWindow()
-main.show()
+age_calculator = MainWindow()
+age_calculator.show()
 sys.exit(app.exec())
