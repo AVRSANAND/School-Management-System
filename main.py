@@ -53,6 +53,16 @@ class MainWindow(QMainWindow):
         dialog = SearchDialog()
         dialog.exec()
 
+
+class InsertDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Insert Student")
+        self.setFixedWidth(300)
+        self.setFixedHeight(300)
+
+
 class SearchDialog(QDialog):
 
     def __init__(self):
