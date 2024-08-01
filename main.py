@@ -1,3 +1,4 @@
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import (QApplication, QVBoxLayout,
                              QLabel, QWidget, QGridLayout,
@@ -25,11 +26,11 @@ class MainWindow(QMainWindow):
         edit_menu_item.addAction(search_action)
         search_action.triggered.connect(self.search)
 
-
         self.table = QTableWidget()
         self.table.setColumnCount(4)
         self.table.setHorizontalHeaderLabels(("id", "name", "course", "mobile"))
         self.setCentralWidget(self.table)
+
 
     def load_Data(self):
         connection = sqlite3.connect("database.db")
@@ -67,10 +68,22 @@ class SearchDialog(QDialog):
         self.setLayout(layout)
 
     def search(self):
-        pass
+        name = self.student_name.text()
+        connection = sqlite3.connect("database.db")
+        cursor = connection.cursor()
+        result = cursor.execute("SELECT * FROM students WHERE name = ?", (name,))
+        rows = list(result)
+        print(rows)
+        items = main_window.table.findItems(name, Qt.MatchFlag.MatchFixedString)
+        for item in items:
+            print(item)
+            main_window.table.item(item.row(),1).setSelected(True)
+        cursor.close()
+        connection.close()
+
 
 app = QApplication(sys.argv)
-age_calculator = MainWindow()
-age_calculator.show()
-age_calculator.load_Data()
+main_window = MainWindow()
+main_window.show()
+main_window.load_Data()
 sys.exit(app.exec())
