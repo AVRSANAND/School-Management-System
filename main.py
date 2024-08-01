@@ -1,8 +1,8 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QAction
+from PyQt6.QtGui import QAction, QIcon
 from PyQt6.QtWidgets import (QApplication, QVBoxLayout,
                              QLabel, QWidget, QGridLayout,
-                             QLineEdit, QPushButton, QMainWindow, QTableWidget, QTableWidgetItem, QDialog)
+                             QLineEdit, QPushButton, QMainWindow, QTableWidget, QTableWidgetItem, QDialog, QToolBar)
 import sys
 import sqlite3
 
@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
         help_menu_item = self.menuBar().addMenu("&Help")
         edit_menu_item = self.menuBar().addMenu("&Edit")
 
-        add_student_action = QAction("Add Student", self)
+        add_student_action = QAction(QIcon("icons/add.png"), "Add Student", self)
         file_menu_item.addAction(add_student_action)
 
         about_action = QAction("About", self)
@@ -31,6 +31,12 @@ class MainWindow(QMainWindow):
         self.table.setHorizontalHeaderLabels(("id", "name", "course", "mobile"))
         self.setCentralWidget(self.table)
 
+        # Toolbar and Toolbar Elements
+
+        toolbar = QToolBar()
+        toolbar.setMovable(True)
+        self.addToolBar(toolbar)
+        toolbar.addAction(add_student_action)
 
     def load_Data(self):
         connection = sqlite3.connect("database.db")
