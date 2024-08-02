@@ -87,7 +87,6 @@ class InsertDialog(QDialog):
         button.clicked.connect(self.add_student)
         layout.addWidget(button)
 
-
         self.setLayout(layout)
 
     def add_student(self):
@@ -100,6 +99,7 @@ class InsertDialog(QDialog):
         connection.commit()
         cursor.close()
         connection.close()
+        main_window.load_Data()
 
 class SearchDialog(QDialog):
 
