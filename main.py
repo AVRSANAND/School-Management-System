@@ -2,7 +2,8 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QIcon
 from PyQt6.QtWidgets import (QApplication, QVBoxLayout,
                              QLabel, QWidget, QGridLayout,
-                             QLineEdit, QPushButton, QMainWindow, QTableWidget, QTableWidgetItem, QDialog, QToolBar)
+                             QLineEdit, QPushButton, QMainWindow, QTableWidget, QTableWidgetItem, QDialog, QToolBar,
+                             QComboBox)
 import sys
 import sqlite3
 
@@ -16,8 +17,9 @@ class MainWindow(QMainWindow):
         help_menu_item = self.menuBar().addMenu("&Help")
         edit_menu_item = self.menuBar().addMenu("&Edit")
 
-        add_student_action = QAction(QIcon("icons/add.png"), "Add Student", self)
+        add_student_action = QAction("Add Student", self)
         file_menu_item.addAction(add_student_action)
+        add_student_action.triggered.connect(self.insert)
 
         about_action = QAction("About", self)
         help_menu_item.addAction(about_action)
@@ -49,6 +51,10 @@ class MainWindow(QMainWindow):
         connection.close()
         pass
 
+    def insert(self):
+        dialog = InsertDialog()
+        dialog.exec()
+
     def search(self):
         dialog = SearchDialog()
         dialog.exec()
@@ -62,6 +68,27 @@ class InsertDialog(QDialog):
         self.setFixedWidth(300)
         self.setFixedHeight(300)
 
+        layout = QVBoxLayout()
+        student_name = QLineEdit()
+        student_name.setPlaceholderText("Name")
+        layout.addWidget(student_name)
+
+        course_name = QComboBox()
+        courses = ["Biology", "Math", "Physics", "Chemistry"]
+        course_name.addItem(courses)
+        layout.addWidget(course_name)
+
+        mobile = QLineEdit()
+        mobile.setPlaceholderText("Mobile")
+        layout.addWidget(mobile)
+
+        # button = QPushButton("Register")
+        # button.clicked.connect(self.add_students)
+
+        self.setLayout(layout)
+
+    def add_student(self):
+        pass
 
 class SearchDialog(QDialog):
 
