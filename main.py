@@ -83,8 +83,10 @@ class InsertDialog(QDialog):
         self.mobile.setPlaceholderText("Mobile")
         layout.addWidget(self.mobile)
 
-        # button = QPushButton("Register")
-        # button.clicked.connect(self.add_students)
+        button = QPushButton("Register")
+        button.clicked.connect(self.add_student)
+        layout.addWidget(button)
+
 
         self.setLayout(layout)
 
@@ -96,6 +98,8 @@ class InsertDialog(QDialog):
         cursor = connection.cursor()
         cursor.execute("INSERT INTO students (name, course, mobile) VALUES (?, ?, ?)", (name, course, mobile))
         connection.commit()
+        cursor.close()
+        connection.close()
 
 class SearchDialog(QDialog):
 
