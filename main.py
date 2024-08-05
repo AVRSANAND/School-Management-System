@@ -1,7 +1,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QIcon
 from PyQt6.QtWidgets import (QApplication, QVBoxLayout,
-                             QLabel, QWidget, QGridLayout,
+                             QLabel, QGridLayout,
                              QLineEdit, QPushButton, QMainWindow, QTableWidget, QTableWidgetItem, QDialog, QToolBar,
                              QComboBox, QStatusBar, QMessageBox)
 import sys
@@ -12,7 +12,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("School Management System")
-        self.setMinimumSize(500,400)
+        self.setMinimumSize(500, 400)
 
         file_menu_item = self.menuBar().addMenu("&File")
         help_menu_item = self.menuBar().addMenu("&Help")
@@ -24,6 +24,7 @@ class MainWindow(QMainWindow):
 
         about_action = QAction("About", self)
         help_menu_item.addAction(about_action)
+        about_action.triggered.connect(self.about)
 
         search_action = QAction(QIcon("icons/search.png"), "Search", self)
         edit_menu_item.addAction(search_action)
@@ -63,10 +64,8 @@ class MainWindow(QMainWindow):
             for child in children:
                 self.statusbar.removeWidget(child)
 
-
         self.statusbar.addWidget(edit_button)
         self.statusbar.addWidget(delete_button)
-
 
     def load_Data(self):
         connection = sqlite3.connect("database.db")
@@ -94,6 +93,22 @@ class MainWindow(QMainWindow):
     def delete(self):
         dialog = DeleteDialog()
         dialog.exec()
+
+    def about(self):
+        dialog = AboutDialog()
+        dialog.exec()
+
+
+class AboutDialog(QMessageBox):
+
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("About")
+        content = """
+        This app is a school management system where it keeps the records
+        of students along with their course and mobile number.
+        """
+        self.setText(content)
 
 
 class EditDialog(QDialog):
@@ -139,7 +154,9 @@ class EditDialog(QDialog):
     def update_student(self):
         connection = sqlite3.connect("database.db")
         cursor = connection.cursor()
-        cursor.execute("UPDATE students SET name = ?, course = ?, mobile = ? WHERE id = ?", (self.student_name.text(), self.course_name.itemText(self.course_name.currentIndex()), self.mobile.text(), self.student_id))
+        cursor.execute("UPDATE students SET name = ?, course = ?, mobile = ? WHERE id = ?", (
+            self.student_name.text(), self.course_name.itemText(self.course_name.currentIndex()), self.mobile.text(),
+            self.student_id))
         connection.commit()
         cursor.close()
         connection.close()
@@ -158,22 +175,21 @@ class DeleteDialog(QDialog):
         yes = QPushButton("Yes")
         no = QPushButton("No")
 
-        layout.addWidget(conformation, 0,0,1,2)
-        layout.addWidget(yes, 1,0)
-        layout.addWidget(no, 1,1)
+        layout.addWidget(conformation, 0, 0, 1, 2)
+        layout.addWidget(yes, 1, 0)
+        layout.addWidget(no, 1, 1)
 
         self.setLayout(layout)
 
         yes.clicked.connect(self.delete_student)
 
     def delete_student(self):
-
         index = main_window.table.currentRow()
         student_id = main_window.table.item(index, 0).text()
 
         connection = sqlite3.connect("database.db")
         cursor = connection.cursor()
-        cursor.execute("DELETE from students WHERE id = ?", (student_id, ))
+        cursor.execute("DELETE from students WHERE id = ?", (student_id,))
         connection.commit()
         cursor.close()
         connection.close()
@@ -228,6 +244,7 @@ class InsertDialog(QDialog):
         connection.close()
         main_window.load_Data()
 
+
 class SearchDialog(QDialog):
 
     def __init__(self):
@@ -258,7 +275,7 @@ class SearchDialog(QDialog):
         items = main_window.table.findItems(name, Qt.MatchFlag.MatchFixedString)
         for item in items:
             print(item)
-            main_window.table.item(item.row(),1).setSelected(True)
+            main_window.table.item(item.row(), 1).setSelected(True)
         cursor.close()
         connection.close()
 
