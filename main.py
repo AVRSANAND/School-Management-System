@@ -137,7 +137,13 @@ class EditDialog(QDialog):
         self.setLayout(layout)
 
     def update_student(self):
-        pass
+        connection = sqlite3.connect("database.db")
+        cursor = connection.cursor()
+        cursor.execute("UPDATE students SET name = ?, course = ?, mobile = ? WHERE id = ?", (self.student_name.text(), self.course_name.itemText(self.course_name.currentIndex()), self.mobile.text(), self.student_id))
+        connection.commit()
+        cursor.close()
+        connection.close()
+        main_window.load_Data()
 
 
 class DeleteDialog(QDialog):
