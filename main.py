@@ -147,7 +147,23 @@ class EditDialog(QDialog):
 
 
 class DeleteDialog(QDialog):
-    pass
+
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Delete Student Record")
+
+        layout = QGridLayout()
+        conformation = QLabel("Are you sure ? Want to delete ?")
+        yes = QPushButton("Yes")
+        no = QPushButton("No")
+
+        layout.addWidget(conformation, 0,0,1,2)
+        layout.addWidget(yes, 1,0)
+        layout.addWidget(no, 1,1)
+
+        self.setLayout(layout)
+
 
 
 class InsertDialog(QDialog):
