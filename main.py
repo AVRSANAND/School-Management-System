@@ -162,6 +162,13 @@ class EditDialog(QDialog):
         connection.close()
         main_window.load_Data()
 
+        self.close()
+
+        conformation_msg = QMessageBox()
+        conformation_msg.setWindowTitle("Success")
+        conformation_msg.setText("The student record was updated successfully")
+        conformation_msg.exec()
+
 
 class DeleteDialog(QDialog):
 
@@ -243,6 +250,13 @@ class InsertDialog(QDialog):
         cursor.close()
         connection.close()
         main_window.load_Data()
+
+        self.close()
+
+        conformation_msg = QMessageBox()
+        conformation_msg.setWindowTitle("Success")
+        conformation_msg.setText("The student record was added successfully")
+        conformation_msg.exec()
 
 
 class SearchDialog(QDialog):
