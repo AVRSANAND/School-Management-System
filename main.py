@@ -97,7 +97,47 @@ class MainWindow(QMainWindow):
 
 
 class EditDialog(QDialog):
-    pass
+
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Update Student")
+        self.setFixedWidth(300)
+        self.setFixedHeight(300)
+
+        layout = QVBoxLayout()
+
+        # Get student name from selected row
+        index = main_window.table.currentRow()
+
+        self.student_id = main_window.table.item(index, 0).text()
+
+        student_name = main_window.table.item(index, 1).text()
+
+        self.student_name = QLineEdit(student_name)
+        self.student_name.setPlaceholderText("Name")
+        layout.addWidget(self.student_name)
+
+        course_name = main_window.table.item(index, 2).text()
+        self.course_name = QComboBox()
+        courses = ["Biology", "Math", "Physics", "Chemistry"]
+        self.course_name.addItems(courses)
+        self.course_name.setCurrentText(course_name)
+        layout.addWidget(self.course_name)
+
+        mobile = main_window.table.item(index, 3).text()
+        self.mobile = QLineEdit(mobile)
+        self.mobile.setPlaceholderText("Mobile")
+        layout.addWidget(self.mobile)
+
+        button = QPushButton("Update")
+        button.clicked.connect(self.update_student)
+        layout.addWidget(button)
+
+        self.setLayout(layout)
+
+    def update_student(self):
+        pass
 
 
 class DeleteDialog(QDialog):
